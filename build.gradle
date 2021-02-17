@@ -1,0 +1,95 @@
+import org.yaml.snakeyaml.Yaml
+
+buildscript {
+	dependencies {
+		classpath group: 'org.yaml', name: 'snakeyaml', version: '1.27'
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.4.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "org.flywaydb.flyway" version "7.5.3"
+	id 'nu.studer.jooq' version '4.1'
+	id 'java'
+	id 'war'
+}
+
+apply from: 'gradle/dependencies.gradle'
+
+group = 'org.zgr'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
+def datasource = props['spring']['datasource']
+
+jooq() {
+	version = '3.14.7'
+	edition = 'OSS'
+
+	notificationSender(sourceSets.main) {
+		jdbc {
+			driver = 'org.postgresql.Driver'
+			url = datasource['url']
+			user = datasource['username']
+			password = datasource['password']
+		}
+		generator {
+			name = 'org.jooq.codegen.JavaGenerator'
+			generate {
+				validationAnnotations = true
+				daos = true
+				fluentSetters = true
+			}
+			database {
+				name = 'org.jooq.meta.postgres.PostgresDatabase'
+				inputSchema = 'notification_sender'
+				includes = '.*'
+				excludes = 'flyway_schema_history'
+			}
+			target {
+				packageName = 'org.zgr.notification.sender.db'
+				directory = 'src/main/java'
+			}
+		}
+	}
+}
+
+flyway {
+	url = datasource['url']
+	user = datasource['username']
+	password = datasource['password']
+}
+
+generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
+
+test {
+	useJUnitPlatform()
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	annotationProcessor libs.lombok
+
+	jooqRuntime libs.db
+
+	compile libs.spring
+	compile libs.db
+	compile libs.common
+
+	testCompile libs.test
+}
+
+configurations {
+	flywayRuntime{
+		extendsFrom implementation
+	}
+	jooqRuntime {
+		extendsFrom implementation
+	}
+}

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.241.0.127:5432/notification-service
+    username: postgres
+    password: ''
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+
+  flyway:
+    enabled: false
