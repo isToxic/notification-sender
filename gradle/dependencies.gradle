@@ -21,5 +21,5 @@ ext {
     libs.spring = [libs.springBootStarterWeb, libs.springBootStarterJooq]
     libs.db = [libs.flywayCore, libs.postgresql]
     libs.test = [libs.springBootStarterTest, libs.testcontainersCore, libs.testcontainersPostgresql]
-    libs.common = [libs.validation]
+    libs.common = [libs.validation, libs.lombok]
 }

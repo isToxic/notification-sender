@@ -50,7 +50,7 @@ jooq() {
 				excludes = 'flyway_schema_history'
 			}
 			target {
-				packageName = 'org.zgr.notification.sender.db'
+				packageName = 'org.zgr.notification.sender.db.jooq'
 				directory = 'src/main/java'
 			}
 		}
