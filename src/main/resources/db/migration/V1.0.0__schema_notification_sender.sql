@@ -1,5 +1,10 @@
 CREATE SCHEMA IF NOT EXISTS notification_sender;
 
+CREATE SEQUENCE notification_sender."query_id_seq"
+    INCREMENT 1
+    MINVALUE 1
+    START 1;
+
 CREATE TABLE IF NOT EXISTS notification_sender."int_comm_query"
 (
     CAMPAIGN_CD     character varying(20)       NOT NULL,
@@ -16,7 +21,7 @@ CREATE TABLE IF NOT EXISTS notification_sender."int_comm_query"
     MESSAGE_HEADER  character varying(100),
     DEEP_LINK       character varying(100),
     MESSAGE_URL     character varying(200),
-    INT_QUERY_ID    bigint                      NOT NULL,
+    INT_QUERY_ID    bigint                      NOT NULL DEFAULT nextval('notification_sender."query_id_seq"'),
     INT_CREATE_DTTM timestamp without time zone NOT NULL,
     INT_UPDATE_DTTM timestamp without time zone NOT NULL,
     INT_STATUS      character varying(10)       NOT NULL,

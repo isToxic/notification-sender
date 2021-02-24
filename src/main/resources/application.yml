@@ -11,3 +11,13 @@ spring:
 
   flyway:
     enabled: false
+  jooq:
+    sql-dialect: postgres
+
+notification:
+  send:
+    url: http://www.send.to
+  receive:
+    mapping: /status
+    delay-millis: 30000
+    wait-before-send-minutes: 30

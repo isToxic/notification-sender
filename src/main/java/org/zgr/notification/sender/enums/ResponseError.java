@@ -31,7 +31,7 @@ public enum ResponseError {
     @JsonCreator
     public static ResponseError forValues(@JsonProperty("code") int code,
                                           @JsonProperty("description") String description) {
-        for (ResponseError error : ResponseError.values()) {
+        for (ResponseError error : values()) {
             if (
                     (error.getCode() == code) && error.getDescription().equals(description)) {
                 return error;

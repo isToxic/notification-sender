@@ -1,4 +1,4 @@
-package org.zgr.notification.sender.models.recieve;
+package org.zgr.notification.sender.model.recieve;
 
 import lombok.Data;
 

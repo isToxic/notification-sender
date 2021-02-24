@@ -1,4 +1,4 @@
-package org.zgr.notification.sender.models.send;
+package org.zgr.notification.sender.model.send;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,5 +8,5 @@ import org.zgr.notification.sender.enums.MessageType;
 @Builder
 public class Message {
     private MessageType type;
-    private org.zgr.notification.sender.models.send.Data data;
+    private org.zgr.notification.sender.model.send.Data data;
 }
