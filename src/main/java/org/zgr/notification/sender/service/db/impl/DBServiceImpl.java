@@ -36,8 +36,8 @@ public class DBServiceImpl implements DBService {
     @Value("${notification.receive.task-limit}")
     int taskLimit;
 
-    int DEACTIVATE_ERROR_CODE = 34;
-    String DEACTIVATE_ERROR_DESCRIPTION = "deactivate";
+    final int DEACTIVATE_ERROR_CODE = 34;
+    final String DEACTIVATE_ERROR_DESCRIPTION = "deactivate";
 
     public List<IntCommQuery> receiveNotificationTasks() {
         // Вычитываем список задач на отправку уведомлений с временем создания > waitBeforeSend и со статусом NEW и датой отправки в указанных интервалах
