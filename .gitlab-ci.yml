@@ -58,6 +58,7 @@ build:
 #     - ./gradlew check
 # # 8089
 deploy:
+  image: docker:stable
   stage: deploy
   image: docker:stable
   tags:
