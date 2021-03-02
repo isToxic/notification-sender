@@ -24,7 +24,7 @@ build:
       - build/libs/*.jar
     expire_in: 1 week
   only:
-    - master
+    - test_ci
 
 test:
   stage: test
