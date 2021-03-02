@@ -33,6 +33,7 @@ test:
     - ./gradlew check
 
 deploy:
+  image: docker:stable
   stage: deploy
   script:
     - docker build -t notification-sender:latest .
