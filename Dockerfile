@@ -1,9 +1,6 @@
 FROM java:8-jdk
 #ENV GRADLE_USER_HOME=gradle/
 
-COPY * /root/
-WORKDIR /root/gradle
-RUN chmod +x gradlew
-RUN /root/gradlew assemble
-RUN /root/gradlew check
-RUN echo "End CI"
+COPY build/libs/notification-sender-0.0.1-SNAPSHOT.war /app/
+WORKDIR /app/
+ENTRYPOINT ["java","-jar","notification-sender-0.0.1-SNAPSHOT.jar"]
