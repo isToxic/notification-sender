@@ -22,8 +22,8 @@ build:
     - ./gradlew assemble
   artifacts:
     paths:
-      - build/libs/*.jar
-    expire_in: 1 week
+      - build/libs/*
+    expire_in: 1 day
   only:
     - test_ci
 
