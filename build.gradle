@@ -22,6 +22,18 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def mainClassName = "org.zgr.notification.sender.NotificationSenderApplication"
+
+jar {
+	manifest {
+		attributes "Main-Class": "$mainClassName"
+	}
+
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
 def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
 def datasource = props['spring']['datasource']
 
