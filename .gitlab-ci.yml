@@ -8,7 +8,7 @@ stages:
 before_script:
   #  - echo `pwd` # debug
   #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - export GRADLE_USER_HOME=`pwd`/gradle
   - chmod +x gradlew
 
 cache:
@@ -19,7 +19,7 @@ cache:
 build:
   stage: build
   script:
-    - ./gradlew bootJar
+    - ./gradlew assemble
   artifacts:
     paths:
       - build/libs/*
@@ -35,6 +35,12 @@ test:
 deploy:
   image: docker:stable
   stage: deploy
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
+
   script:
     - docker build -t notification-sender:latest .
     - docker rm -f notification-sender || true
