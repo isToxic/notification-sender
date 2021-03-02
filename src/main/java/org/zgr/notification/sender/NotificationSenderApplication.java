@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableScheduling
-@EnableTransactionManagement
 @SpringBootApplication
+@EnableTransactionManagement
 public class NotificationSenderApplication {
 
 	public static void main(String[] args) {

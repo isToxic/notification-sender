@@ -34,6 +34,8 @@ jar {
 	}
 }
 
+compileJava.inputs.files(processResources)
+
 def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
 def datasource = props['spring']['datasource']
 

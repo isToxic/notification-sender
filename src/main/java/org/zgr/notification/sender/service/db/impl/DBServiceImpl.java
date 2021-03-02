@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zgr.notification.sender.db.jooq.tables.pojos.IntCommQuery;
+import org.zgr.notification.sender.db.jooq.tables.pojos.IntCommResponse;
 import org.zgr.notification.sender.db.jooq.tables.pojos.IntDeactivateList;
 import org.zgr.notification.sender.enums.IntCommStatus;
 import org.zgr.notification.sender.enums.IntDeactivateListStatus;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.zgr.notification.sender.db.jooq.Tables.INT_COMM_RESPONSE;
 import static org.zgr.notification.sender.db.jooq.Tables.INT_DEACTIVATE_LIST;
 import static org.zgr.notification.sender.db.jooq.tables.IntCommQuery.INT_COMM_QUERY;
 
@@ -32,7 +34,7 @@ public class DBServiceImpl implements DBService {
     @Value("${notification.receive.wait-before-send-minutes}")
     long waitBeforeSend;
     @Value("${notification.receive.task-limit}")
-    long taskLimit = 10;
+    int taskLimit;
 
     int DEACTIVATE_ERROR_CODE = 34;
     String DEACTIVATE_ERROR_DESCRIPTION = "deactivate";
@@ -104,7 +106,8 @@ public class DBServiceImpl implements DBService {
                 .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.SENT.name())
                 .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
                 .set(INT_COMM_QUERY.INT_ERROR_CODE, 0)
-                .where(INT_COMM_QUERY.CONTACT_ID.eq(contactId));
+                .where(INT_COMM_QUERY.CONTACT_ID.eq(contactId))
+                .execute();
     }
 
     @Override
@@ -114,6 +117,71 @@ public class DBServiceImpl implements DBService {
                 .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
                 .set(INT_COMM_QUERY.INT_ERROR_CODE, response.getError().getCode())
                 .set(INT_COMM_QUERY.INT_ERROR_TEXT, response.getError().getDescription())
-                .where(INT_COMM_QUERY.CONTACT_ID.eq(contactId));
+                .where(INT_COMM_QUERY.CONTACT_ID.eq(contactId))
+                .execute();
+    }
+
+    @Override
+    public void saveNotificationStatusSMS(IntCommResponse intCommResponse) {
+        dsl.insertInto(INT_COMM_RESPONSE)
+                .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                .set(INT_COMM_RESPONSE.PART_COUNT, intCommResponse.getPartCount())
+                .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
+                .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                .setNull(INT_COMM_RESPONSE.ERROR_TEXT)
+                .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                .execute();
+    }
+
+    @Override
+    public void saveNotificationStatusSMSError(IntCommResponse intCommResponse) {
+        dsl.insertInto(INT_COMM_RESPONSE)
+                .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                .set(INT_COMM_RESPONSE.PART_COUNT, intCommResponse.getPartCount())
+                .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
+                .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                .set(INT_COMM_RESPONSE.ERROR_TEXT, intCommResponse.getErrorText())
+                .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                .execute();
+    }
+
+    @Override
+    public void saveNotificationStatusPUSH(IntCommResponse intCommResponse) {
+        dsl.insertInto(INT_COMM_RESPONSE)
+                .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                .setNull(INT_COMM_RESPONSE.PART_COUNT)
+                .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
+                .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                .setNull(INT_COMM_RESPONSE.ERROR_TEXT)
+                .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                .execute();
+    }
+
+    @Override
+    public void saveNotificationStatusPUSHError(IntCommResponse intCommResponse) {
+        dsl.insertInto(INT_COMM_RESPONSE)
+                .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                .setNull(INT_COMM_RESPONSE.PART_COUNT)
+                .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
+                .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                .set(INT_COMM_RESPONSE.ERROR_TEXT, intCommResponse.getErrorText())
+                .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                .execute();
     }
 }

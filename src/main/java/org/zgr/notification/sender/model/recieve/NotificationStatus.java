@@ -3,7 +3,7 @@ package org.zgr.notification.sender.model.recieve;
 import lombok.Data;
 
 @Data
-public class BroadcastStatus {
+public class NotificationStatus {
     private String id;
     private String mtNum;
     private int status;
@@ -17,4 +17,5 @@ public class BroadcastStatus {
     private String errorCode;
     private String mccMnc;
     private String trafficType;
+    private String segmentPrice;
 }

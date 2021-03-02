@@ -25,6 +25,7 @@ import org.zgr.notification.sender.service.http.SendNotificationService;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -68,11 +69,16 @@ public class SendNotificationServiceImpl implements SendNotificationService {
                     .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE)
                     .body(requestBody);
 
+            log.info("send notification request to:{} with body:{}", url, requestBody.toString());
             ResponseEntity<NotificationResponse> response = restTemplate.exchange(request, NotificationResponse.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("set status SENT to task with contact id:{}", intCommQuery.getContactId());
                 dbService.setStatusSent(intCommQuery.getContactId());
             } else {
+                log.info("set status ERROR to task with contact id:{}, error:{}",
+                        intCommQuery.getContactId(), Objects.requireNonNull(response.getBody()).getError().toString()
+                );
                 dbService.setErrorStatus(intCommQuery.getContactId(), response.getBody());
             }
         };

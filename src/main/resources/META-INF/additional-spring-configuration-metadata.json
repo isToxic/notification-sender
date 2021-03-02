@@ -1,0 +1,83 @@
+{
+  "properties": [
+    {
+      "name": "notification.service-numbers.366.sms",
+      "type": "java.lang.String",
+      "description": "Description for notification.service-numbers.366.sms."
+    },
+    {
+      "name": "notification.service-numbers.366.push",
+      "type": "java.lang.String",
+      "description": "Description for notification.service-numbers.366.push."
+    },
+    {
+      "name": "notification.service-numbers.gorzdrav.sms",
+      "type": "java.lang.String",
+      "description": "Description for notification.service-numbers.gorzdrav.sms."
+    },
+    {
+      "name": "notification.service-numbers.gorzdrav.push",
+      "type": "java.lang.String",
+      "description": "Description for notification.service-numbers.gorzdrav.push."
+    },
+    {
+      "name": "notification.send.url",
+      "type": "java.lang.String",
+      "description": "Description for notification.send.url."
+    },
+    {
+      "name": "notification.send.connect-timeout-millis",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.send.connect-timeout-millis."
+    },
+    {
+      "name": "notification.send.request-timeout-millis",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.send.request-timeout-millis."
+    },
+    {
+      "name": "notification.send.login",
+      "type": "java.lang.String",
+      "description": "Description for notification.send.login."
+    },
+    {
+      "name": "notification.send.password",
+      "type": "java.lang.String",
+      "description": "Description for notification.send.password."
+    },
+    {
+      "name": "notification.receive.mapping",
+      "type": "java.lang.String",
+      "description": "Description for notification.receive.mapping."
+    },
+    {
+      "name": "notification.receive.delay-millis",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.delay-millis."
+    },
+    {
+      "name": "notification.receive.wait-before-send-minutes",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.wait-before-send-minutes."
+    },
+    {
+      "name": "notification.receive.task-limit",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.task-limit."
+    },
+    {
+      "name": "notification.receive.core-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.core-pool-size."
+    },
+    {
+      "name": "notification.receive.max-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.max-pool-size."
+    },
+    {
+      "name": "notification.receive.keep-alive-time",
+      "type": "java.lang.Integer",
+      "description": "Description for notification.receive.keep-alive-time."
+    }
+  ] }
