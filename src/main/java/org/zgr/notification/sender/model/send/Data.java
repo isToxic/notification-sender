@@ -1,14 +1,12 @@
 package org.zgr.notification.sender.model.send;
 
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @lombok.Data
 public class Data {
     private String text;
-    private InstantContent instantContent;
-    private boolean flash;
     private String serviceNumber;
     private int ttl;
-    private int smsPriority;
+    private String ttlUnit;
 }

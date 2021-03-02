@@ -15,9 +15,24 @@ spring:
     sql-dialect: postgres
 
 notification:
+  service-numbers:
+    366:
+      sms: dfgdfg
+      push: dfgdfgdf
+    gorzdrav:
+      sms: fgdfg
+      push: dfhdfgs
   send:
     url: http://www.send.to
+    connect-timeout-millis: 30000
+    request-timeout-millis: 30000
+    login: s
+    password: www
   receive:
     mapping: /status
     delay-millis: 30000
     wait-before-send-minutes: 30
+    task-limit: 100
+    core-pool-size: 10
+    max-pool-size: 10
+    keep-alive-time: 20

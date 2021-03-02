@@ -8,11 +8,8 @@ import lombok.Data;
 public class NotificationRequest {
     private String login;
     private String password;
-    private String extraParam;
     private boolean useTimeDiff;
     private String id;
-    private boolean shortenLinks;
-    private int registeredDelivery;
     private ScheduleInfo scheduleInfo;
     private String destAddr;
     private Message message;
