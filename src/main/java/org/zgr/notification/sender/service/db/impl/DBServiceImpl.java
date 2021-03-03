@@ -65,38 +65,40 @@ public class DBServiceImpl implements DBService {
                     .where(INT_DEACTIVATE_LIST.INT_STATUS.eq(IntDeactivateListStatus.NEW.name()))
                     .fetchInto(IntDeactivateList.class);
 
-            // Отфильтровываем список задач на дективацию
-            List<IntCommQuery> tasksToDeactivate = newNotificationTasks.parallelStream()
-                    .filter(intCommQuery ->
-                            newDeactivateTasks.stream()
-                                    .map(IntDeactivateList::getContactId)
-                                    .collect(Collectors.toList())
-                                    .contains(intCommQuery.getContactId()))
-                    .collect(Collectors.toList());
+            if (newDeactivateTasks.size() != 0) {
+                // Отфильтровываем список задач на дективацию
+                List<IntCommQuery> tasksToDeactivate = newNotificationTasks.parallelStream()
+                        .filter(intCommQuery ->
+                                newDeactivateTasks.stream()
+                                        .map(IntDeactivateList::getContactId)
+                                        .collect(Collectors.toList())
+                                        .contains(intCommQuery.getContactId()))
+                        .collect(Collectors.toList());
 
-            if (tasksToDeactivate.size() != 0) {
-                // проставляем для задач на дективацию статус ERROR, код ошибки и описание
-                dsl.update(INT_COMM_QUERY)
-                        .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.ERROR.name())
-                        .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
-                        .set(INT_COMM_QUERY.INT_ERROR_CODE, DEACTIVATE_ERROR_CODE)
-                        .set(INT_COMM_QUERY.INT_ERROR_TEXT, DEACTIVATE_ERROR_DESCRIPTION)
-                        .where(INT_COMM_QUERY.CONTACT_ID.in(
-                                tasksToDeactivate.stream()
-                                        .map(IntCommQuery::getContactId)
-                                        .collect(Collectors.toList())))
-                        .execute();
+                if (tasksToDeactivate.size() != 0) {
+                    // проставляем для задач на дективацию статус ERROR, код ошибки и описание
+                    dsl.update(INT_COMM_QUERY)
+                            .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.ERROR.name())
+                            .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
+                            .set(INT_COMM_QUERY.INT_ERROR_CODE, DEACTIVATE_ERROR_CODE)
+                            .set(INT_COMM_QUERY.INT_ERROR_TEXT, DEACTIVATE_ERROR_DESCRIPTION)
+                            .where(INT_COMM_QUERY.CONTACT_ID.in(
+                                    tasksToDeactivate.stream()
+                                            .map(IntCommQuery::getContactId)
+                                            .collect(Collectors.toList())))
+                            .execute();
 
-                dsl.update(INT_DEACTIVATE_LIST)
-                        .set(INT_DEACTIVATE_LIST.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
-                        .set(INT_DEACTIVATE_LIST.INT_STATUS, IntDeactivateListStatus.DONE.name())
-                        .where(INT_DEACTIVATE_LIST.CONTACT_ID.in(
-                                tasksToDeactivate.stream()
-                                        .map(IntCommQuery::getContactId)
-                                        .collect(Collectors.toList())))
-                        .execute();
-                // Убираем из списка задач - деактивированные
-                newNotificationTasks.removeAll(tasksToDeactivate);
+                    dsl.update(INT_DEACTIVATE_LIST)
+                            .set(INT_DEACTIVATE_LIST.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
+                            .set(INT_DEACTIVATE_LIST.INT_STATUS, IntDeactivateListStatus.DONE.name())
+                            .where(INT_DEACTIVATE_LIST.CONTACT_ID.in(
+                                    tasksToDeactivate.stream()
+                                            .map(IntCommQuery::getContactId)
+                                            .collect(Collectors.toList())))
+                            .execute();
+                    // Убираем из списка задач - деактивированные
+                    newNotificationTasks.removeAll(tasksToDeactivate);
+                }
             }
         }
         return newNotificationTasks;
