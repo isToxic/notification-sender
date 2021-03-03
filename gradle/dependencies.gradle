@@ -4,11 +4,13 @@ def flywayVer = '7.5.3'
 def postgresqlVer = '42.2.14'
 def testcontainersVer = '1.15.1'
 def javaxVer = '2.0.1.Final'
+def httpClientVer = '4.5.13'
 
 ext {
     libs = [
             springBootStarterJooq   : "org.springframework.boot:spring-boot-starter-jooq:$springBootVer",
             springBootStarterWeb    : "org.springframework.boot:spring-boot-starter-web:$springBootVer",
+            httpClient              : "org.apache.httpcomponents:httpclient:$httpClientVer",
             flywayCore              : "org.flywaydb:flyway-core:$flywayVer",
             lombok                  : "org.projectlombok:lombok:$lombokVer",
             postgresql              : "org.postgresql:postgresql:$postgresqlVer",
@@ -21,5 +23,5 @@ ext {
     libs.spring = [libs.springBootStarterWeb, libs.springBootStarterJooq]
     libs.db = [libs.flywayCore, libs.postgresql]
     libs.test = [libs.springBootStarterTest, libs.testcontainersCore, libs.testcontainersPostgresql]
-    libs.common = [libs.validation, libs.lombok]
+    libs.common = [libs.validation, libs.lombok, libs.httpClient]
 }

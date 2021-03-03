@@ -353,7 +353,6 @@ public class IntCommQuery implements Serializable {
     /**
      * Getter for <code>notification_sender.int_comm_query.int_query_id</code>.
      */
-    @NotNull
     public Long getIntQueryId() {
         return this.intQueryId;
     }

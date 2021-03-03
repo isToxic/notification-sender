@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class HttpConfig {
 
-    @Value("${notification.receive.connect-timeout-millis}")
+    @Value("${notification.send.connect-timeout-millis}")
     private int CONNECT_TIMEOUT;
-    @Value("${notification.receive.request-timeout-millis}")
+    @Value("${notification.send.request-timeout-millis}")
     private int REQUEST_TIMEOUT;
 
     @Bean

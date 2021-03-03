@@ -12,6 +12,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row21;
@@ -127,7 +128,7 @@ public class IntCommQuery extends TableImpl<IntCommQueryRecord> {
     /**
      * The column <code>notification_sender.int_comm_query.int_query_id</code>.
      */
-    public final TableField<IntCommQueryRecord, Long> INT_QUERY_ID = createField(DSL.name("int_query_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<IntCommQueryRecord, Long> INT_QUERY_ID = createField(DSL.name("int_query_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>notification_sender.int_comm_query.int_create_dttm</code>.
@@ -195,6 +196,11 @@ public class IntCommQuery extends TableImpl<IntCommQueryRecord> {
     @Override
     public Schema getSchema() {
         return NotificationSender.NOTIFICATION_SENDER;
+    }
+
+    @Override
+    public Identity<IntCommQueryRecord, Long> getIdentity() {
+        return (Identity<IntCommQueryRecord, Long>) super.getIdentity();
     }
 
     @Override

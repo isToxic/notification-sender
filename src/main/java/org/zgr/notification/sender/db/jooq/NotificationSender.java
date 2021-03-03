@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Catalog;
+import org.jooq.Sequence;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 import org.zgr.notification.sender.db.jooq.tables.IntCommQuery;
@@ -63,6 +64,12 @@ public class NotificationSender extends SchemaImpl {
     @Override
     public Catalog getCatalog() {
         return DefaultCatalog.DEFAULT_CATALOG;
+    }
+
+    @Override
+    public final List<Sequence<?>> getSequences() {
+        return Arrays.<Sequence<?>>asList(
+            Sequences.QUERY_ID_SEQ);
     }
 
     @Override

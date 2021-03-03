@@ -24,10 +24,12 @@ notification:
       push: dfhdfgs
   send:
     url: http://www.send.to
-    connect-timeout-millis: 30000
-    request-timeout-millis: 30000
+    connect-timeout-millis: 3000
+    request-timeout-millis: 3000
     login: s
     password: www
+    ttl: 60
+    ttlUnit: MINUTES
   receive:
     mapping: /status
     delay-millis: 30000

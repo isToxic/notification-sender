@@ -272,7 +272,6 @@ public class IntCommQueryRecord extends TableRecordImpl<IntCommQueryRecord> impl
     /**
      * Getter for <code>notification_sender.int_comm_query.int_query_id</code>.
      */
-    @NotNull
     public Long getIntQueryId() {
         return (Long) get(14);
     }
