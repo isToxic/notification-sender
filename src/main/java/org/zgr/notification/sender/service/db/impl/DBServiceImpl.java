@@ -49,53 +49,55 @@ public class DBServiceImpl implements DBService {
                 .limit(taskLimit)
                 .fetchInto(IntCommQuery.class);
 
-        // Проставляем в БД статус PROCESSING для обрабатываемых задач
-        dsl.update(INT_COMM_QUERY)
-                .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.PROCESSING.name())
-                .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
-                .where(INT_COMM_QUERY.CONTACT_ID.in(
-                        newNotificationTasks.stream()
-                                .map(IntCommQuery::getContactId)
-                                .collect(Collectors.toList())))
-                .execute();
-
-        // Вычитываем список деактиваций со статусом NEW
-        List<IntDeactivateList> newDeactivateTasks = dsl.selectFrom(INT_DEACTIVATE_LIST)
-                .where(INT_DEACTIVATE_LIST.INT_STATUS.eq(IntDeactivateListStatus.NEW.name()))
-                .fetchInto(IntDeactivateList.class);
-
-        // Отфильтровываем список задач на дективацию
-        List<IntCommQuery> tasksToDeactivate = newNotificationTasks.parallelStream()
-                .filter(intCommQuery ->
-                        newDeactivateTasks.stream()
-                                .map(IntDeactivateList::getContactId)
-                                .collect(Collectors.toList())
-                                .contains(intCommQuery.getContactId()))
-                .collect(Collectors.toList());
-
-        if (tasksToDeactivate.size() != 0) {
-            // проставляем для задач на дективацию статус ERROR, код ошибки и описание
+        if (newNotificationTasks.size() != 0) {
+            // Проставляем в БД статус PROCESSING для обрабатываемых задач
             dsl.update(INT_COMM_QUERY)
-                    .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.ERROR.name())
+                    .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.PROCESSING.name())
                     .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
-                    .set(INT_COMM_QUERY.INT_ERROR_CODE, DEACTIVATE_ERROR_CODE)
-                    .set(INT_COMM_QUERY.INT_ERROR_TEXT, DEACTIVATE_ERROR_DESCRIPTION)
                     .where(INT_COMM_QUERY.CONTACT_ID.in(
-                            tasksToDeactivate.stream()
+                            newNotificationTasks.stream()
                                     .map(IntCommQuery::getContactId)
                                     .collect(Collectors.toList())))
                     .execute();
 
-            dsl.update(INT_DEACTIVATE_LIST)
-                    .set(INT_DEACTIVATE_LIST.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
-                    .set(INT_DEACTIVATE_LIST.INT_STATUS, IntDeactivateListStatus.DONE.name())
-                    .where(INT_DEACTIVATE_LIST.CONTACT_ID.in(
-                            tasksToDeactivate.stream()
-                                    .map(IntCommQuery::getContactId)
-                                    .collect(Collectors.toList())))
-                    .execute();
-            // Убираем из списка задач - деактивированные
-            newNotificationTasks.removeAll(tasksToDeactivate);
+            // Вычитываем список деактиваций со статусом NEW
+            List<IntDeactivateList> newDeactivateTasks = dsl.selectFrom(INT_DEACTIVATE_LIST)
+                    .where(INT_DEACTIVATE_LIST.INT_STATUS.eq(IntDeactivateListStatus.NEW.name()))
+                    .fetchInto(IntDeactivateList.class);
+
+            // Отфильтровываем список задач на дективацию
+            List<IntCommQuery> tasksToDeactivate = newNotificationTasks.parallelStream()
+                    .filter(intCommQuery ->
+                            newDeactivateTasks.stream()
+                                    .map(IntDeactivateList::getContactId)
+                                    .collect(Collectors.toList())
+                                    .contains(intCommQuery.getContactId()))
+                    .collect(Collectors.toList());
+
+            if (tasksToDeactivate.size() != 0) {
+                // проставляем для задач на дективацию статус ERROR, код ошибки и описание
+                dsl.update(INT_COMM_QUERY)
+                        .set(INT_COMM_QUERY.INT_STATUS, IntCommStatus.ERROR.name())
+                        .set(INT_COMM_QUERY.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
+                        .set(INT_COMM_QUERY.INT_ERROR_CODE, DEACTIVATE_ERROR_CODE)
+                        .set(INT_COMM_QUERY.INT_ERROR_TEXT, DEACTIVATE_ERROR_DESCRIPTION)
+                        .where(INT_COMM_QUERY.CONTACT_ID.in(
+                                tasksToDeactivate.stream()
+                                        .map(IntCommQuery::getContactId)
+                                        .collect(Collectors.toList())))
+                        .execute();
+
+                dsl.update(INT_DEACTIVATE_LIST)
+                        .set(INT_DEACTIVATE_LIST.INT_UPDATE_DTTM, Timestamp.from(Instant.now()))
+                        .set(INT_DEACTIVATE_LIST.INT_STATUS, IntDeactivateListStatus.DONE.name())
+                        .where(INT_DEACTIVATE_LIST.CONTACT_ID.in(
+                                tasksToDeactivate.stream()
+                                        .map(IntCommQuery::getContactId)
+                                        .collect(Collectors.toList())))
+                        .execute();
+                // Убираем из списка задач - деактивированные
+                newNotificationTasks.removeAll(tasksToDeactivate);
+            }
         }
         return newNotificationTasks;
     }
