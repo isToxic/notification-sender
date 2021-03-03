@@ -12,7 +12,6 @@ plugins {
 	id "org.flywaydb.flyway" version "7.5.3"
 	id 'nu.studer.jooq' version '4.1'
 	id 'java'
-	id 'war'
 }
 
 apply from: 'gradle/dependencies.gradle'
@@ -23,16 +22,6 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 def mainClassName = "org.zgr.notification.sender.NotificationSenderApplication"
-
-jar {
-	manifest {
-		attributes "Main-Class": "$mainClassName"
-	}
-
-	from {
-		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-}
 
 compileJava.inputs.files(processResources)
 
