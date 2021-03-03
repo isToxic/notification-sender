@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-@SpringBootTest(classes = NotificationSenderApplication.class)
-public abstract class NotificationSenderApplicationTests {
+@SpringBootTest(classes = NotificationSenderApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public abstract class AppTests {
     public static PostgreSQLContainer<?> postgreSQLContainer;
 
     @BeforeAll
@@ -13,12 +13,11 @@ public abstract class NotificationSenderApplicationTests {
         if (postgreSQLContainer == null) {
             postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
                     .withExposedPorts(5432)
-                    .withDatabaseName("push-gateway")
+                    .withDatabaseName("notification-service")
                     .withUsername("postgres")
-                    .withPassword("postgres");
+                    .withPassword("test");
             postgreSQLContainer.start();
         }
         System.setProperty("spring.datasource.url", postgreSQLContainer.getJdbcUrl());
-        System.setProperty("spring.datasource.driver-class-name", postgreSQLContainer.getDriverClassName());
     }
 }

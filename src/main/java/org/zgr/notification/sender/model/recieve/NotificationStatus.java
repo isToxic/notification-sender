@@ -1,8 +1,10 @@
 package org.zgr.notification.sender.model.recieve;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class NotificationStatus {
     private String id;
     private String mtNum;

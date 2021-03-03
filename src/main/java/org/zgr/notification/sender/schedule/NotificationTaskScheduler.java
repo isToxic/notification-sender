@@ -1,4 +1,4 @@
-package org.zgr.notification.sender.schedulle;
+package org.zgr.notification.sender.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

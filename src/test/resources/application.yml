@@ -1,0 +1,39 @@
+server:
+  port: 9998
+spring:
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: test
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+
+  jooq:
+    sql-dialect: postgres
+
+notification:
+  service-numbers:
+    366:
+      sms: dfgdfg
+      push: dfgdfgdf
+    gorzdrav:
+      sms: fgdfg
+      push: dfhdfgs
+  send:
+    url: http://www.send.to
+    connect-timeout-millis: 3000
+    request-timeout-millis: 3000
+    login: s
+    password: www
+    ttl: 60
+    ttlUnit: MINUTES
+  receive:
+    mapping: /status
+    delay-millis: 30000
+    wait-before-send-minutes: 30
+    task-limit: 100
+    core-pool-size: 10
+    max-pool-size: 10
+    keep-alive-time: 20

@@ -21,8 +21,6 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def mainClassName = "org.zgr.notification.sender.NotificationSenderApplication"
-
 compileJava.inputs.files(processResources)
 
 def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
@@ -69,7 +67,13 @@ flyway {
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
 
 test {
+	flywayMigrate.enabled = false
+	generateNotificationSenderJooqSchemaSource.enabled = false
 	useJUnitPlatform()
+	testLogging {
+		displayGranularity = 1
+		events = ["STARTED", "PASSED", "FAILED", "SKIPPED"]
+	}
 }
 
 repositories {
@@ -78,6 +82,7 @@ repositories {
 
 dependencies {
 	annotationProcessor libs.lombok
+	testAnnotationProcessor libs.lombok
 
 	jooqRuntime libs.db
 

@@ -76,8 +76,8 @@ public class SendNotificationServiceImpl implements SendNotificationService {
                 log.info("set status SENT to task with contact id:{}", intCommQuery.getContactId());
                 dbService.setStatusSent(intCommQuery.getContactId());
             } else {
-                log.info("set status ERROR to task with contact id:{}, error:{}",
-                        intCommQuery.getContactId(), Objects.requireNonNull(response.getBody()).getError().toString()
+                log.error("set status ERROR to task with contact id:{}, status code:{}, message body:{}",
+                        intCommQuery.getContactId(), response.getStatusCodeValue(), Objects.requireNonNull(response.getBody()).toString()
                 );
                 dbService.setErrorStatus(intCommQuery.getContactId(), response.getBody());
             }
