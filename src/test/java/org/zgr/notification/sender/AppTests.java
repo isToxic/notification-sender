@@ -2,8 +2,10 @@ package org.zgr.notification.sender;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest(classes = NotificationSenderApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class AppTests {
     public static PostgreSQLContainer<?> postgreSQLContainer;
