@@ -43,9 +43,9 @@ public class DBServiceImpl implements DBService {
         // Вычитываем список задач на отправку уведомлений с временем создания > waitBeforeSend и со статусом NEW и датой отправки в указанных интервалах
         List<IntCommQuery> newNotificationTasks = dsl.selectFrom(INT_COMM_QUERY)
                 .where(INT_COMM_QUERY.INT_STATUS.eq(IntCommStatus.NEW.name())
-                        .and(INT_COMM_QUERY.INT_CREATE_DTTM.greaterOrEqual(Timestamp.from(Instant.now().plus(waitBeforeSend, MINUTES))))
-                        .and(INT_COMM_QUERY.START_DATE.greaterOrEqual(Date.valueOf(LocalDate.now())))
-                        .and(INT_COMM_QUERY.END_DATE.lessOrEqual(Date.valueOf(LocalDate.now()))))
+                        .and(INT_COMM_QUERY.INT_CREATE_DTTM.lessOrEqual(Timestamp.from(Instant.now().minus(waitBeforeSend, MINUTES))))
+                        .and(INT_COMM_QUERY.START_DATE.lessOrEqual(Date.valueOf(LocalDate.now())))
+                        .and(INT_COMM_QUERY.END_DATE.greaterOrEqual(Date.valueOf(LocalDate.now()))))
                 .limit(taskLimit)
                 .fetchInto(IntCommQuery.class);
 
