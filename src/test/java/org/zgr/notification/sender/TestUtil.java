@@ -5,7 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class TestUtil {
 
     public static String getRandomString() {
-        return RandomStringUtils.random(6);
+        return RandomStringUtils.randomAlphanumeric(6);
     }
 
     public static Long getLongIn(long start, long end) {

@@ -16,6 +16,7 @@ import org.zgr.notification.sender.enums.MessageType;
 import org.zgr.notification.sender.model.recieve.NotificationStatus;
 import org.zgr.notification.sender.service.http.NotificationStatusService;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 import static io.restassured.RestAssured.with;
@@ -48,15 +49,15 @@ public class NotificationStatusControllerTest extends AppTests {
                 .mtNum(getRandomString())
                 .status(2)
                 .type(MessageType.SMS.name())
-                .doneDate(Instant.now().toString())
-                .submitDate(Instant.now().minusSeconds(700L).toString())
+                .doneDate(Timestamp.from(Instant.now()))
+                .submitDate(Timestamp.from(Instant.now().minusSeconds(700L)))
                 .destAddr(getRandomString())
                 .sourceAddr(getRandomString())
                 .text(getRandomString())
                 .partCount(getRandomString())
                 .errorCode(getRandomString())
                 .mccMnc(getRandomString())
-                .trafficType(getLongIn(0,3).toString())
+                .trafficType(getLongIn(0,3).intValue())
                 .build();
 
         with()

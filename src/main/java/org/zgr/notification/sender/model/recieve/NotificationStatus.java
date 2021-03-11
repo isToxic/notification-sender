@@ -3,6 +3,8 @@ package org.zgr.notification.sender.model.recieve;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
 public class NotificationStatus {
@@ -10,14 +12,14 @@ public class NotificationStatus {
     private String mtNum;
     private int status;
     private String type;
-    private String doneDate;
-    private String submitDate;
+    private Timestamp doneDate;
+    private Timestamp submitDate;
     private String destAddr;
     private String sourceAddr;
     private String text;
     private String partCount;
     private String errorCode;
     private String mccMnc;
-    private String trafficType;
+    private int trafficType;
     private String segmentPrice;
 }

@@ -88,7 +88,7 @@ public class NotificationStatusServiceImpl implements NotificationStatusService 
         intCommResponse.setIntStatus(IntCommStatus.NEW.name());
         intCommResponse.setIntUpdateDttm(Timestamp.from(Instant.now()));
         intCommResponse.setMessageType(notificationStatus.getType());
-        intCommResponse.setResponseDttm(Timestamp.valueOf(notificationStatus.getDoneDate()));
+        intCommResponse.setResponseDttm(notificationStatus.getDoneDate());
         intCommResponse.setResponseNm(NotificationResponseStatus.getByCode(notificationStatus.getStatus()).name());
     }
 }
