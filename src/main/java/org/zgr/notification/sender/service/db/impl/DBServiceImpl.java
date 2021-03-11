@@ -66,7 +66,7 @@ public class DBServiceImpl implements DBService {
                     .fetchInto(IntDeactivateList.class);
 
             if (newDeactivateTasks.size() != 0) {
-                // Отфильтровываем список задач на дективацию
+                // Отфильтровываем список задач на деактивацию
                 List<IntCommQuery> tasksToDeactivate = newNotificationTasks.parallelStream()
                         .filter(intCommQuery ->
                                 newDeactivateTasks.stream()

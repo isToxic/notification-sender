@@ -42,7 +42,7 @@ public class NotificationTaskSchedulerTest extends AppTests {
     private static final int messages = 50;
 
     @Test
-    public void test() {
+    public void processingTest() {
         await().atMost(Duration.ofMinutes(1L)).until(()-> messages == inMockQuery.size());
 
         Assertions.assertEquals(generatedForTest.size(), inMockQuery.size());
