@@ -72,7 +72,7 @@ public class SendNotificationServiceImpl implements SendNotificationService {
             log.info("send notification request to:{} with body:{}", url, requestBody.toString());
             ResponseEntity<NotificationResponse> response = restTemplate.exchange(request, NotificationResponse.class);
 
-            if (response.getStatusCode().is2xxSuccessful()) {
+            if (response.getStatusCode().is2xxSuccessful() && Objects.requireNonNull(response.getBody()).hasBody()) {
                 log.info("set status SENT to task with contact id:{}", intCommQuery.getContactId());
                 dbService.setStatusSent(intCommQuery.getContactId());
             } else {

@@ -3,7 +3,6 @@ package org.zgr.notification.sender.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +10,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResponseError {
-
     UNAVAILABLE(1, "Service is unavailable"),
     INVALID_IP_ADRESS(2, "Invalid IP-address"),
     TO_MANY_CONNECTIONS(3, "Too many connections"),
@@ -38,11 +36,5 @@ public enum ResponseError {
             }
         }
         return null;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-        return String.format("http status:%s, error:%s ", code, description);
     }
 }

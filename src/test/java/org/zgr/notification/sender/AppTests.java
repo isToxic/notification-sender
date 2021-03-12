@@ -11,7 +11,7 @@ public abstract class AppTests {
     public static PostgreSQLContainer<?> postgreSQLContainer;
 
     @BeforeAll
-    static void setUp() {
+    static void setUpAll() {
         if (postgreSQLContainer == null) {
             postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
                     .withExposedPorts(5432)
