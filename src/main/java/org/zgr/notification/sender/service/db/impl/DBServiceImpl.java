@@ -10,9 +10,11 @@ import org.zgr.notification.sender.db.jooq.tables.pojos.IntCommResponse;
 import org.zgr.notification.sender.db.jooq.tables.pojos.IntDeactivateList;
 import org.zgr.notification.sender.enums.IntCommStatus;
 import org.zgr.notification.sender.enums.IntDeactivateListStatus;
+import org.zgr.notification.sender.enums.NotificationResponseStatus;
 import org.zgr.notification.sender.model.recieve.NotificationResponse;
 import org.zgr.notification.sender.service.db.DBService;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -159,18 +161,33 @@ public class DBServiceImpl implements DBService {
 
     @Override
     public void saveNotificationStatusPUSH(IntCommResponse intCommResponse) {
-        dsl.insertInto(INT_COMM_RESPONSE)
-                .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
-                .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
-                .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
-                .setNull(INT_COMM_RESPONSE.PART_COUNT)
-                .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
-                .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
-                .setNull(INT_COMM_RESPONSE.ERROR_TEXT)
-                .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
-                .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
-                .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
-                .execute();
+        if (intCommResponse.getResponseNm().equals(NotificationResponseStatus.OPEN.name())){
+            dsl.insertInto(INT_COMM_RESPONSE)
+                    .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                    .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                    .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                    .setNull(INT_COMM_RESPONSE.PART_COUNT)
+                    .set(INT_COMM_RESPONSE.COMM_COST, BigDecimal.ZERO)
+                    .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                    .setNull(INT_COMM_RESPONSE.ERROR_TEXT)
+                    .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                    .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                    .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                    .execute();
+        } else {
+            dsl.insertInto(INT_COMM_RESPONSE)
+                    .set(INT_COMM_RESPONSE.CONTACT_ID, intCommResponse.getContactId())
+                    .set(INT_COMM_RESPONSE.RESPONSE_NM, intCommResponse.getResponseNm())
+                    .set(INT_COMM_RESPONSE.MESSAGE_TYPE, intCommResponse.getMessageType())
+                    .setNull(INT_COMM_RESPONSE.PART_COUNT)
+                    .set(INT_COMM_RESPONSE.COMM_COST, intCommResponse.getCommCost())
+                    .set(INT_COMM_RESPONSE.ERROR_CODE, intCommResponse.getErrorCode())
+                    .setNull(INT_COMM_RESPONSE.ERROR_TEXT)
+                    .set(INT_COMM_RESPONSE.RESPONSE_DTTM, intCommResponse.getResponseDttm())
+                    .set(INT_COMM_RESPONSE.INT_UPDATE_DTTM, intCommResponse.getIntUpdateDttm())
+                    .set(INT_COMM_RESPONSE.INT_STATUS, intCommResponse.getIntStatus())
+                    .execute();
+        }
     }
 
     @Override

@@ -38,11 +38,9 @@ public class NotificationStatusServiceImpl implements NotificationStatusService 
             }
         } else {
             if (NotificationResponseStatus.getByCode(notificationStatus.getStatus()).equals(NotificationResponseStatus.UNDELIVERED)) {
-
                 getRecordForPUSHError(result, notificationStatus);
                 dbService.saveNotificationStatusPUSHError(result);
             } else {
-
                 getRecordForPUSH(result, notificationStatus);
                 dbService.saveNotificationStatusPUSH(result);
             }

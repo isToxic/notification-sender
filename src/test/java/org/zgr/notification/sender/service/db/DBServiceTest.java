@@ -568,7 +568,7 @@ public class DBServiceTest extends AppTests {
         forSave.setContactId(getLongIn(0L, 99999L));
         forSave.setIntStatus(IntCommStatus.NEW.name());
         forSave.setIntUpdateDttm(Timestamp.from(Instant.now()));
-        forSave.setMessageType(MessageType.SMS.name());
+        forSave.setMessageType(MessageType.PUSH.name());
         forSave.setResponseDttm(Timestamp.from(Instant.now().minus(10L, HOURS)));
         forSave.setResponseNm(NotificationResponseStatus.getByCode(2).name());
         forSave.setCommCost(new BigDecimal("0.88"));
@@ -595,6 +595,41 @@ public class DBServiceTest extends AppTests {
         Assertions.assertEquals(forSave.getResponseNm(), result.getResponseNm());
     }
 
+
+    @Test
+    @Transactional
+    public void saveNotificationStatusPUSHOpenTest() {
+        IntCommResponse forSave = new IntCommResponse();
+        forSave.setContactId(getLongIn(0L, 99999L));
+        forSave.setIntStatus(IntCommStatus.NEW.name());
+        forSave.setIntUpdateDttm(Timestamp.from(Instant.now()));
+        forSave.setMessageType(MessageType.SMS.name());
+        forSave.setResponseDttm(Timestamp.from(Instant.now().minus(10L, HOURS)));
+        forSave.setResponseNm(NotificationResponseStatus.OPEN.name());
+        forSave.setCommCost(new BigDecimal("0.88"));
+        forSave.setErrorCode(0);
+
+        dbService.saveNotificationStatusPUSH(forSave);
+
+        List<IntCommResponse> responses = dsl.selectFrom(INT_COMM_RESPONSE)
+                .where(INT_COMM_RESPONSE.CONTACT_ID.eq(forSave.getContactId()))
+                .fetchInto(IntCommResponse.class);
+
+        Assertions.assertEquals(1, responses.size());
+        IntCommResponse result = responses.get(0);
+
+        Assertions.assertEquals(forSave.getContactId(), result.getContactId());
+        Assertions.assertEquals(forSave.getErrorCode(), result.getErrorCode());
+        Assertions.assertEquals(forSave.getIntStatus(), result.getIntStatus());
+        Assertions.assertEquals(forSave.getPartCount(), result.getPartCount());
+        Assertions.assertEquals(forSave.getIntUpdateDttm(), result.getIntUpdateDttm());
+        Assertions.assertEquals(0, BigDecimal.ZERO.compareTo(result.getCommCost()));
+        Assertions.assertEquals(forSave.getErrorText(), result.getErrorText());
+        Assertions.assertEquals(forSave.getMessageType(), result.getMessageType());
+        Assertions.assertEquals(forSave.getResponseDttm(), result.getResponseDttm());
+        Assertions.assertEquals(forSave.getResponseNm(), result.getResponseNm());
+    }
+
     @Test
     @Transactional
     public void saveNotificationStatusPUSHErrorTest() {
@@ -602,7 +637,7 @@ public class DBServiceTest extends AppTests {
         forSave.setContactId(getLongIn(0L, 99999L));
         forSave.setIntStatus(IntCommStatus.NEW.name());
         forSave.setIntUpdateDttm(Timestamp.from(Instant.now()));
-        forSave.setMessageType(MessageType.SMS.name());
+        forSave.setMessageType(MessageType.PUSH.name());
         forSave.setResponseDttm(Timestamp.from(Instant.now().minus(10L, HOURS)));
         forSave.setResponseNm(NotificationResponseStatus.getByCode(2).name());
         forSave.setCommCost(new BigDecimal("0.88"));
