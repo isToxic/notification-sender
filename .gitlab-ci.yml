@@ -29,7 +29,6 @@ build:
 
 test:
   stage: test
-  image: docker:stable
   tags:
     - docker-gitlab-runner
   variables:
