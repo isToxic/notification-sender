@@ -12,21 +12,20 @@ spring:
 
   jooq:
     sql-dialect: postgres
-
 notification:
   service-numbers:
     366:
-      sms: dfgdfg
-      push: dfgdfgdf
+      sms: 366 service number sms
+      push: 366 service number push
     gorzdrav:
-      sms: fgdfg
-      push: dfhdfgs
+      sms: gorzdrav service number sms
+      push: gorzdrav service number push
   send:
-    url: http://www.send.to
+    url: http://mobicont.restapi
     connect-timeout-millis: 3000
     request-timeout-millis: 3000
-    login: s
-    password: www
+    login: user login
+    password: user password
     ttl: 60
     ttlUnit: MINUTES
   receive:
