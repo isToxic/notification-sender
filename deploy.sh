@@ -26,6 +26,8 @@ export sn_gorzdrav_sms
 export sn_gorzdrav_push
 export send_url
 
+chmox +x gradlew
+./gradlew migrate
 docker build -t notification-sender .
 docker rm -f notification-sender || true
 docker run -d -p $port:$port --name notification-sender -e platform=$platform \
