@@ -29,6 +29,12 @@ build:
 
 test:
   stage: test
+  image: docker:stable
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
   script:
     - ./gradlew check
 
