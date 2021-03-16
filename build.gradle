@@ -23,8 +23,12 @@ targetCompatibility = 1.8
 
 compileJava.inputs.files(processResources)
 
-def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
-def datasource = props['spring']['datasource']
+def adr = System.getenv('db_address') ?: '10.241.0.127'
+def port = System.getenv('db_port') ?: '5432'
+def dbn = System.getenv('db_name') ?: 'notification-service'
+def dbUsername = System.getenv('db_user') ?: 'postgres'
+def dbPassword = System.getenv('db_pass') ?: 'test'
+def dbUrl = "jdbc:postgresql://" + adr + ":" + port + "/" + dbn
 
 jooq() {
 	version = '3.14.7'
@@ -32,10 +36,10 @@ jooq() {
 
 	notificationSender(sourceSets.main) {
 		jdbc {
+			url = dbUrl
+			user = dbUsername
+			password = dbPassword
 			driver = 'org.postgresql.Driver'
-			url = datasource['url']
-			user = datasource['username']
-			password = datasource['password']
 		}
 		generator {
 			name = 'org.jooq.codegen.JavaGenerator'
@@ -59,16 +63,14 @@ jooq() {
 }
 
 flyway {
-	url = datasource['url']
-	user = datasource['username']
-	password = datasource['password']
+	url = dbUrl
+	user = dbUsername
+	password = dbPassword
 }
 
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
 
 test {
-	flywayMigrate.enabled = false
-	generateNotificationSenderJooqSchemaSource.enabled = false
 	useJUnitPlatform()
 	testLogging {
 		displayGranularity = 1
