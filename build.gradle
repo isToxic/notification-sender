@@ -66,6 +66,8 @@ flyway {
 	password = dbPassword
 }
 
+flywayMigrate.setOnlyIf {dbPassword != "test"}
+generateNotificationSenderJooqSchemaSource.setOnlyIf {dbPassword != "test"}
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
 
 test {
