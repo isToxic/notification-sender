@@ -1,0 +1,50 @@
+image: java:8-jdk
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  #  - echo `pwd` # debug
+  #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
+  - export GRADLE_USER_HOME=`pwd`/gradle
+  - chmod +x gradlew
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+  artifacts:
+    paths:
+      - build/libs/*
+    expire_in: 1 day
+  only:
+    - test_ci
+
+test:
+  stage: test
+  script:
+    - ./gradlew check
+
+deploy:
+  image: docker:stable
+  stage: deploy
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
+
+  script:
+    - docker build -t notification-sender:latest .
+    - docker rm -f notification-sender || true
+    - docker run -d -p 7777:8080 notification-sender:latest
+
+after_script:
+  - echo "End CI"
