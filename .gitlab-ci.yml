@@ -47,8 +47,7 @@ build:
       - lombok.config
       - settings.gradle
     expire_in: 1 day
-  only:
-    - dev_ci
+
 
 test:
   stage: test
