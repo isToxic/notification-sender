@@ -25,7 +25,11 @@ compileJava.inputs.files(processResources)
 
 def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
 def datasource = props['spring']['datasource']
-
+def adr = ${db_address}
+def port = ${db_port}
+def dbn = ${db_name}
+def dbu = ${db_user}
+def dbp = ${db_pass}
 jooq() {
 	version = '3.14.7'
 	edition = 'OSS'
@@ -59,9 +63,9 @@ jooq() {
 }
 
 flyway {
-	url = datasource['url']
-	user = datasource['username']
-	password = datasource['password']
+	url = "jdbc:postgresql://" + adr + ":" + port + "/" + dbn ///datasource['url']
+	user = dbu ///datasource['username']
+	password = dbp  /// datasource['password']
 }
 
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
