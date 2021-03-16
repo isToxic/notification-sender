@@ -30,12 +30,25 @@ build:
 test:
   stage: test
   script:
+    - chmod +x gradlew
     - ./gradlew check
-
+# 8089
 deploy:
   stage: deploy
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
+
   script:
     - echo "Deploy..."
+    - docker login gitlab.zagruzka.com:4567 -u $reguser -p $regpass
+    - docker build -t gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME .
+    - docker push gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
+    - docker stop notification-sender || true && docker rm -f notification-sender || true && docker run -d  -p 8089:9998 --name notification-sender --restart always gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
+
+
 
 after_script:
   - echo "End CI"
