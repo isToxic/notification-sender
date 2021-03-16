@@ -35,6 +35,7 @@ build:
 # # 8089
 deploy:
   stage: deploy
+  image: docker:stable
   tags:
     - docker-gitlab-runner
   variables:
