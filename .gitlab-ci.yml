@@ -2,7 +2,7 @@ image: java:8-jdk
 
 stages:
   - build
- # - test
+  - test
   - deploy
 
 before_script:
@@ -50,11 +50,17 @@ build:
   only:
     - dev_ci
 
-# test:
-#   stage: test
-#   script:
-#     - chmod +x gradlew
-#     - ./gradlew check
+test:
+  stage: test
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
+
+  script:
+    - chmod +x gradlew
+    - ./gradlew check
 # # 8089
 deploy:
   stage: deploy
