@@ -12,6 +12,8 @@ sn_gorzdrav_sms=dfgdfg #service number for gorzdrav sms
 sn_gorzdrav_push=dfgdfgdf #service number for gorzdrav push
 send_url=http://www.send.to # url for sending notifications
 
+
+
 export port
 export platform
 export db_address
@@ -27,7 +29,8 @@ export sn_gorzdrav_push
 export send_url
 
 chmod +x gradlew
-./gradlew migrate
+./gradlew flywayMigrate
+# export db_address=172.17.0.4
 docker build -t notification-sender .
 docker rm -f notification-sender || true
 docker run -d -p $port:$port --name notification-sender -e platform=$platform \
