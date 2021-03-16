@@ -67,8 +67,8 @@ flyway {
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
 
 test {
-	flywayMigrate.enabled = false
-	generateNotificationSenderJooqSchemaSource.enabled = false
+//	flywayMigrate.enabled = false
+//	generateNotificationSenderJooqSchemaSource.enabled = false
 	useJUnitPlatform()
 	testLogging {
 		displayGranularity = 1
