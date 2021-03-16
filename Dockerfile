@@ -1,6 +1,7 @@
-FROM java:8-jdk
-#ENV GRADLE_USER_HOME=gradle/
+FROM java:8-jre
 
-COPY build/libs/notification-sender-0.0.1-SNAPSHOT.jar /app/
-WORKDIR /app/
-ENTRYPOINT ["java","-jar","notification-sender-0.0.1-SNAPSHOT.war"]
+ADD ./build/libs/*.jar /app/
+
+CMD ["java", "-Xmx200m", "-jar", "/app/notification-sender-0.0.1-SNAPSHOT.jar"]
+
+EXPOSE 9998
