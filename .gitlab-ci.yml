@@ -2,14 +2,13 @@ image: java:8-jdk
 
 stages:
   - build
- # - test
+  - test
   - deploy
 
 before_script:
 #  - echo `pwd` # debug
 #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - chmod +x gradlew
 
 cache:
   paths:
@@ -48,17 +47,21 @@ build:
       - lombok.config
       - settings.gradle
     expire_in: 1 day
-  only:
-    - dev_ci
 
-# test:
-#   stage: test
-#   script:
-#     - chmod +x gradlew
-#     - ./gradlew check
+
+test:
+  stage: test
+  tags:
+    - docker-gitlab-runner
+  variables:
+    DOCKER_API_VERSION: "1.39"
+    DOCKER_HOST: tcp://10.241.0.85:2375
+
+  script:
+    - chmod +x gradlew
+    - ./gradlew check
 # # 8089
 deploy:
-  image: docker:stable
   stage: deploy
   image: docker:stable
   tags:
@@ -86,9 +89,9 @@ deploy:
     - docker push gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
     - docker stop notification-sender || true && docker rm -f notification-sender || true
     - docker run -d -e send_url=$send_url -e sn_gorzdrav_push=$sn_gorzdrav_push -e sn_gorzdrav_sms=$sn_gorzdrav_sms -e sn_366_push=$sn_366_push -e sn_366_sms=$sn_366_sms -e db_pass=$db_pass -e db_user=$db_user -e db_name=$db_name -e db_port=$db_port -e db_address=$db_address -e platform=$platform -e port=$port -p 8089:9998 --name notification-sender --restart always gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
- # only:
-#    refs:
-#      - develop
+  only:
+    refs:
+      - develop
 
 after_script:
   - echo "End CI"
