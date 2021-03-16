@@ -37,10 +37,14 @@ jooq() {
 
 	notificationSender(sourceSets.main) {
 		jdbc {
+
+			url = ur ///datasource['url']
+			user = dbu ///datasource['username']
+			password = dbp  /// datasource['password']
 			driver = 'org.postgresql.Driver'
-			url = datasource['url']
-			user = datasource['username']
-			password = datasource['password']
+//			url = datasource['url']
+//			user = datasource['username']
+//			password = datasource['password']
 		}
 		generator {
 			name = 'org.jooq.codegen.JavaGenerator'
