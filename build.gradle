@@ -25,11 +25,12 @@ compileJava.inputs.files(processResources)
 
 def props = new Yaml().load( new File("src/main/resources/application.yml").newInputStream())
 def datasource = props['spring']['datasource']
-def adr = ${db_address}
-def port = ${db_port}
-def dbn = ${db_name}
-def dbu = ${db_user}
-def dbp = ${db_pass}
+def adr = System.getenv('db_address')
+def port = System.getenv('db_port')
+def dbn = System.getenv('db_name')
+def dbu = System.getenv('db_user')
+def dbp = System.getenv('db_pass')
+def ur = "jdbc:postgresql://" + adr + ":" + port + "/" + dbn
 jooq() {
 	version = '3.14.7'
 	edition = 'OSS'
@@ -63,7 +64,7 @@ jooq() {
 }
 
 flyway {
-	url = "jdbc:postgresql://" + adr + ":" + port + "/" + dbn ///datasource['url']
+	url = ur ///datasource['url']
 	user = dbu ///datasource['username']
 	password = dbp  /// datasource['password']
 }

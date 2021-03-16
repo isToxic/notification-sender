@@ -17,6 +17,20 @@ cache:
 
 build:
   stage: build
+  variables:
+    port: 9998 # application port
+    platform: postgres  # database platform
+    db_address: 10.241.0.85  # database ip
+    db_port: 5432 # database port
+    db_name: notification-service # database name
+    db_user: postgres # database user
+    db_pass: "" # database password
+    sn_366_sms: dfgdfg # service number for 366 sms
+    sn_366_push: dfgdfgdf #service number for 366 push
+    sn_gorzdrav_sms: dfgdfg #service number for gorzdrav sms
+    sn_gorzdrav_push: dfgdfgdf #service number for gorzdrav push
+    send_url: http://www.send.to # url for sending notifications
+
   script:
     - chmod +x gradlew
     - ./gradlew assemble
