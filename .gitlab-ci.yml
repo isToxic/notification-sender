@@ -38,6 +38,7 @@ build:
     paths:
       - build/libs/*
       - src/main/resources/application.yml
+      - src/main/resources/db/migration
       - gradle
       - build.gradle
       - deploy.sh
