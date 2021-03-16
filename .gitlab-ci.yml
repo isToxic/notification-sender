@@ -49,16 +49,29 @@ deploy:
   variables:
     DOCKER_API_VERSION: "1.39"
     DOCKER_HOST: tcp://10.241.0.85:2375
+    port: 9998 # application port
+    platform: postgres # database platform
+    db_address: 10.241.0.85 # database ip
+    db_port: 5432 # database port
+    db_name: notification-service # database name
+    db_user: postgres # database user
+    db_pass:  # database password
+    sn_366_sms: dfgdfg # service number for 366 sms
+    sn_366_push: dfgdfgdf #service number for 366 push
+    sn_gorzdrav_sms: dfgdfg #service number for gorzdrav sms
+    sn_gorzdrav_push: dfgdfgdf #service number for gorzdrav push
+    send_url: http://www.send.to # url for sending notifications
 
   script:
     - echo "Deploy..."
     - docker login gitlab.zagruzka.com:4567 -u $reguser -p $regpass
     - docker build -t gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME .
     - docker push gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
-    - docker stop notification-sender || true && docker rm -f notification-sender || true && docker run -d  -p 8089:9998 --name notification-sender --restart always gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
-  only:
-    refs:
-      - develop
+    - docker stop notification-sender || true && docker rm -f notification-sender || true
+    - docker run -d -e send_url=$send_url -e sn_gorzdrav_push=$sn_gorzdrav_push -e sn_gorzdrav_sms=$sn_gorzdrav_sms -e sn_366_push=$sn_366_push -e sn_366_sms=$sn_366_sms -e db_pass=$db_pass -e db_user=$db_user -e db_name=$db_name -e db_port=$db_port -e db_address=$db_address -e platform=$platform -e port=$port -p 8089:9998 --name notification-sender --restart always gitlab.zagruzka.com:4567/integrations/mobicont/notification-sender:$CI_COMMIT_REF_NAME
+ # only:
+#    refs:
+#      - develop
 
 after_script:
   - echo "End CI"
