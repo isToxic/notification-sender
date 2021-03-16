@@ -2,7 +2,7 @@ image: java:8-jdk
 
 stages:
   - build
-  - test
+ # - test
   - deploy
 
 before_script:
@@ -27,12 +27,12 @@ build:
   only:
     - dev_ci
 
-test:
-  stage: test
-  script:
-    - chmod +x gradlew
-    - ./gradlew check
-# 8089
+# test:
+#   stage: test
+#   script:
+#     - chmod +x gradlew
+#     - ./gradlew check
+# # 8089
 deploy:
   stage: deploy
   tags:
