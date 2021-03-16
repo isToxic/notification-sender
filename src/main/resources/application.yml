@@ -1,12 +1,12 @@
 server:
-  port: 9998
+  port: ${port:9998}
 spring:
   datasource:
-    platform: postgres
+    platform: ${platform:postgres}
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://10.241.0.127:5432/notification-service
-    username: postgres
-    password: ''
+    url: jdbc:postgresql://${db_address:10.241.0.127}:${db_port:5432}/${db_name:notification-service}
+    username: ${db_user:postgres}
+    password: ${db_pass:""}
     hikari:
       connection-timeout: 60000
       maximum-pool-size: 5
@@ -19,13 +19,13 @@ spring:
 notification:
   service-numbers:
     366:
-      sms: dfgdfg
-      push: dfgdfgdf
+      sms: ${sn_366_sms:dfgdfg}
+      push: ${sn_366_push:dfgdfgdf}
     gorzdrav:
-      sms: fgdfg
-      push: dfhdfgs
+      sms: ${sn_gorzdrav_sms:fgdfg}
+      push: ${sn_gorzdrav_push:dfhdfgs}
   send:
-    url: http://www.send.to
+    url: ${send_url:http://www.send.to}
     connect-timeout-millis: 3000
     request-timeout-millis: 3000
     login: s

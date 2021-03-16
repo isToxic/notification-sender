@@ -23,6 +23,14 @@ build:
   artifacts:
     paths:
       - build/libs/*
+      - src/main/resources/application.yml
+      - gradle
+      - build.gradle
+      - deploy.sh
+      - Dockerfile
+      - gradlew
+      - lombok.config
+      - settings.gradle
     expire_in: 1 day
   only:
     - dev_ci
@@ -51,7 +59,6 @@ deploy:
   only:
     refs:
       - develop
-
 
 after_script:
   - echo "End CI"
