@@ -14,6 +14,7 @@ import org.zgr.notification.sender.enums.MessageType;
 import org.zgr.notification.sender.enums.RepeatSendState;
 import org.zgr.notification.sender.model.recieve.NotificationResponse;
 import org.zgr.notification.sender.model.send.CascadeChainLink;
+import org.zgr.notification.sender.model.send.CustomPayload;
 import org.zgr.notification.sender.model.send.Data;
 import org.zgr.notification.sender.model.send.Message;
 import org.zgr.notification.sender.model.send.NotificationRequest;
@@ -105,6 +106,10 @@ public class SendNotificationServiceImpl implements SendNotificationService {
                         .serviceNumber(pushServiceNum)
                         .ttl(messageTtl)
                         .ttlUnit(ttlUnit)
+                        .customPayload(
+                                CustomPayload.builder()
+                                        .deeplink(intCommQuery.getDeepLink())
+                                        .build())
                         .build())
                 .build();
         Message sms  = Message.builder()

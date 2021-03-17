@@ -11,4 +11,5 @@ import lombok.experimental.SuperBuilder;
 public class PushData extends Data {
     private String title;
     private PushContent content;
+    private CustomPayload customPayload;
 }
