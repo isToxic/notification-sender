@@ -1,4 +1,6 @@
 #!/bin/bash
+# Настройка окружения
+
 port=9998 # application port
 platform=postgres # database platform
 db_address=172.17.0.4 # database ip
@@ -12,7 +14,7 @@ sn_gorzdrav_sms=dfgdfg #service number for gorzdrav sms
 sn_gorzdrav_push=dfgdfgdf #service number for gorzdrav push
 send_url=http://www.send.to # url for sending notifications
 
-
+# Экспорт окружения
 
 export port
 export platform
@@ -29,8 +31,10 @@ export sn_gorzdrav_push
 export send_url
 
 chmod +x gradlew
+# Выполнение миграции
 ./gradlew flywayMigrate
 # export db_address=172.17.0.4
+# Сборка и запуск контейнера
 docker build -t notification-sender .
 docker rm -f notification-sender || true
 docker run -d -p $port:$port --name notification-sender -e platform=$platform \
