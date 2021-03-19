@@ -45,4 +45,7 @@ docker run -d -p $port:$port --name notification-sender -e platform=$platform \
 -e send_url=$send_url \
 notification-sender
 
+# Запуск без docker
+# java -jar -Xms256m -Xmx2048m build/libs/notification-sender-0.0.1-SNAPSHOT.jar
+
 exit 0

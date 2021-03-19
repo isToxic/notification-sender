@@ -14,8 +14,25 @@
 
 - В архиве скрипт deploy.sh для запуска приложения в docker:
 1) Установить значения переменных
+ - port=9998 # порт приложения 
+ - platform=postgres # тип базы данных (postgres и тд.)
+ - db_address=172.17.0.4 # ip адрес базы данных
+ - db_port=5432 # порт базы данных
+ - db_name=notification-service # название базы
+ - db_user=postgres # пользователь
+ - db_pass="" # database пароль
+ - sn_366_sms=dfgdfg # имя отправителя для 366 по sms
+ - sn_366_push=dfgdfgdf # имя отправителя для 366 push
+ - sn_gorzdrav_sms=dfgdfg # имя отправителя для gorzdrav по sms
+ - sn_gorzdrav_push=dfgdfgdf # имя отправителя для gorzdrav push
+ - send_url=http://www.send.to # url для отправки уведомлений
 2) Сохранить и запустить скрпт: 
 ./deploy.sh
+
+Если требуется установка без docker: 
+1) заменить пунк сборки и установки контейнера в deploy.sh на 
+java -jar -Xms256m -Xmx2048m build/libs/notification-sender-0.0.1-SNAPSHOT.jar
+2) Сохранить и запустить deploy.sh
 
 Описание работы
 -
