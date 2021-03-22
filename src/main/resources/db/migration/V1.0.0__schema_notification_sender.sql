@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS notification_sender."int_comm_query"
     INT_STATUS      character varying(10)       NOT NULL,
     INT_ERROR_CODE  integer,
     INT_ERROR_TEXT  character varying(200),
-    SAS_CHECK_FLG   integer
+    SAS_CHECK_FLG   integer,
+    CONSTRAINT "Pk_notification_sender.int_comm_query" PRIMARY KEY (INT_QUERY_ID)
 );
 
 CREATE TABLE IF NOT EXISTS notification_sender."int_comm_response"
