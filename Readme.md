@@ -31,9 +31,23 @@
 ./deploy.sh
 
 ###Запуск приложения без docker: 
-1) заменить пункт сборки и установки контейнера в deploy.sh на 
+1) закомментировать пункт сборки и установки контейнера в deploy.sh 
+```shell
+docker build -t notification-sender .
+docker rm -f notification-sender || true
+docker run -d -p $port:$port --name notification-sender -e platform=$platform \
+-e port=$port -e db_address=$db_address -e db_port=$db_port \
+-e db_name=$db_name -e db_user=$db_user -e db_pass=$db_pass \
+-e sn_366_sms=$sn_366_sms -e sn_366_push=$sn_366_push \
+-e sn_gorzdrav_sms=$sn_gorzdrav_sms -e sn_gorzdrav_push=$sn_gorzdrav_push \
+-e send_url=$send_url \
+notification-sender
+```   
+2)Раскомментировать пункт
+```shell
 java -jar -Xms256m -Xmx2048m build/libs/notification-sender-0.0.1-SNAPSHOT.jar
-2) Сохранить и запустить deploy.sh
+```
+3) Сохранить и запустить deploy.sh
 
 Описание работы
 -
