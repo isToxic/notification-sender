@@ -25,6 +25,7 @@ import org.zgr.notification.sender.service.db.DBService;
 import org.zgr.notification.sender.service.http.SendNotificationService;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -129,6 +130,10 @@ public class SendNotificationServiceImpl implements SendNotificationService {
                 .scheduleInfo(ScheduleInfo.builder()
                         .timeBegin(intCommQuery.getStartTime().toString())
                         .timeEnd(intCommQuery.getEndTime().toString())
+                        .deadline(LocalDateTime.of(
+                                intCommQuery.getEndDate().toLocalDate(),
+                                intCommQuery.getEndTime().toLocalTime())
+                                .toString())
                         .build())
                 .destAddr(intCommQuery.getMobilePhone())
                 .message(push)
