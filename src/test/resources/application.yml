@@ -9,6 +9,10 @@ spring:
     hikari:
       connection-timeout: 60000
       maximum-pool-size: 5
+  flyway:
+    defaultSchema: notification_sender
+    schemas: notification_sender
+    create-schemas: true
   jooq:
     sql-dialect: postgres
 notification:
