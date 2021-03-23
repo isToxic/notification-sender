@@ -58,10 +58,13 @@ flyway {
 	url = dbUrl
 	user = dbUsername
 	password = dbPassword
+	schemas = ['notification_sender']
+	defaultSchema = 'notification_sender'
+	createSchemas = true
 }
 
-flywayMigrate.setOnlyIf {dbPassword != "test"}
-generateNotificationSenderJooqSchemaSource.setOnlyIf {dbPassword != "test"}
+flywayMigrate.setOnlyIf {dbPassword != 'test'}
+generateNotificationSenderJooqSchemaSource.setOnlyIf {dbPassword != 'test'}
 generateNotificationSenderJooqSchemaSource.dependsOn flywayMigrate
 
 test {
